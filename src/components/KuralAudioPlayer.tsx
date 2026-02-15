@@ -16,12 +16,14 @@ const formatTime = (seconds: number) => {
   return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
 }
 
+const BASE = import.meta.env.BASE_URL
+
 const resolveAudioPath = (rawPath?: string) => {
   if (!rawPath) return ''
   const path = rawPath.trim()
   if (!path) return ''
   if (/^(https?:\/\/|data:|blob:|\/)/i.test(path)) return path
-  return `/${path.replace(/^\.?\//, '')}`
+  return `${BASE}${path.replace(/^\.?\//, '')}`
 }
 
 export default function KuralAudioPlayer({
