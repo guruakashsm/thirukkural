@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  base: '/thirukkural/',
   build: {
     rollupOptions: {
       output: {
@@ -27,7 +28,7 @@ export default defineConfig({
         theme_color: '#C6A75E',
         background_color: '#FDFBF7',
         display: 'standalone',
-        start_url: '/',
+        start_url: '/thirukkural/',
         icons: [
           {
             src: 'pwa-192x192.png',
