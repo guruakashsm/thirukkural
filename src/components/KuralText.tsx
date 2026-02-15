@@ -9,7 +9,6 @@ interface KuralTextProps {
 export default function KuralText({ tamil, baseSizePx = 28, className = '' }: KuralTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [fontSize, setFontSize] = useState(baseSizePx)
-  const [allowWrap, setAllowWrap] = useState(false)
 
   useEffect(() => {
     const container = containerRef.current
@@ -19,19 +18,27 @@ export default function KuralText({ tamil, baseSizePx = 28, className = '' }: Ku
       const availableWidth = container.clientWidth
       if (availableWidth === 0) return
 
-      // Reset to base size and nowrap for measurement
+      // Find all line spans inside the container
+      const lines = container.querySelectorAll<HTMLElement>('.kural-line')
+      if (lines.length === 0) return
+
+      // Reset to base size for measurement
       let size = baseSizePx
       container.style.fontSize = `${size}px`
 
-      // Shrink until text fits or we hit minimum
-      while (container.scrollWidth > availableWidth + 1 && size > 14) {
+      // Shrink until every line fits on a single row without wrapping
+      const fitsAllLines = () => {
+        for (const line of lines) {
+          if (line.scrollWidth > availableWidth + 1) return false
+        }
+        return true
+      }
+
+      while (!fitsAllLines() && size > 10) {
         size -= 1
         container.style.fontSize = `${size}px`
       }
 
-      // If still overflowing at 14px, allow wrapping as a fallback
-      const stillOverflows = container.scrollWidth > availableWidth + 1
-      setAllowWrap(stillOverflows)
       setFontSize(size)
     }
 
@@ -51,11 +58,11 @@ export default function KuralText({ tamil, baseSizePx = 28, className = '' }: Ku
   return (
     <div
       ref={containerRef}
-      className={`font-tamil font-semibold leading-loose text-dark overflow-hidden ${className}`}
+      className={`font-tamil font-semibold leading-loose text-dark ${className}`}
       style={{ fontSize: `${fontSize}px` }}
     >
       {tamil.split('\n').map((line, i) => (
-        <div key={i} style={{ whiteSpace: allowWrap ? 'normal' : 'nowrap' }}>{line}</div>
+        <div key={i} className="kural-line" style={{ whiteSpace: 'nowrap' }}>{line}</div>
       ))}
     </div>
   )

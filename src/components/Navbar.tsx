@@ -117,6 +117,9 @@ export default function Navbar() {
               </span>
             )}
           </Link>
+          <Link to="/quiz" className="p-2 rounded-full hover:bg-gold/10 transition-colors" aria-label={t('quiz')}>
+            <PuzzleIcon className="w-5 h-5 text-gray" />
+          </Link>
           <Link to="/how-to-read" className="p-2 rounded-full hover:bg-gold/10 transition-colors" aria-label={t('howToRead')} title={t('howToRead')}>
             <BookIcon className="w-5 h-5 text-gray" />
           </Link>
@@ -156,10 +159,6 @@ export default function Navbar() {
           </Link>
           <Link to="/explore" onClick={() => setMenuOpen(false)} className="text-gray hover:text-gold-dark transition-colors no-underline text-sm font-medium py-1">
             {t('blog')}
-          </Link>
-          <Link to="/quiz" onClick={() => setMenuOpen(false)} className="text-gray hover:text-gold-dark transition-colors no-underline text-sm font-medium py-1 flex items-center gap-2">
-            <PuzzleIcon className="w-4 h-4" />
-            {t('quiz')}
           </Link>
           <Link to="/watchlist" onClick={() => setMenuOpen(false)} className="text-gray hover:text-gold-dark transition-colors no-underline text-sm font-medium py-1">
             {t('watchlist')} {bookmarkCount > 0 && `(${bookmarkCount})`}
