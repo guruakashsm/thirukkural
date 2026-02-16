@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { useKurals } from '../hooks/useKurals'
 import { useLanguage } from '../contexts/LanguageContext'
+import Breadcrumbs from '../components/Breadcrumbs'
 
 export default function Category() {
   const { name } = useParams<{ name: string }>()
@@ -25,12 +26,12 @@ export default function Category() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      <Link to="/" className="text-gray hover:text-gold-dark transition-colors text-sm no-underline flex items-center gap-1 mb-6">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-        {t('home')}
-      </Link>
+      <Breadcrumbs
+        items={[
+          { label: t('home'), to: '/' },
+          { label: translatedCategoryName },
+        ]}
+      />
 
       <div className="text-center mb-10 animate-fade-in">
         <div
@@ -58,7 +59,7 @@ export default function Category() {
             <Link
               key={chapter.number}
               to={`/chapter/${chapter.number}`}
-              className="group relative flex flex-col items-center text-center no-underline rounded-2xl p-6 pb-5 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl min-h-[180px] justify-center"
+              className="group relative flex flex-col items-center text-center no-underline rounded-2xl p-6 pb-5 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl min-h-[140px] sm:min-h-[180px] justify-center"
               style={{
                 background: `linear-gradient(160deg, #FDFBF7 0%, ${category.color}08 40%, ${category.color}15 100%)`,
                 border: `1px solid ${category.color}25`,

@@ -54,7 +54,7 @@ export default function KuralCard({ number, tamil, tamilMeaning, englishMeaning,
   }
 
   const card = (
-    <div className="palm-leaf-card p-6 hover:shadow-lg hover:border-gold/60 transition-all duration-500 animate-fade-in-up">
+    <div className="palm-leaf-card interactive-hover-card p-6 hover:shadow-lg hover:border-gold/60 transition-all duration-500 animate-fade-in-up">
       <div className="flex items-start justify-between mb-5">
         <div className="w-10 h-10 rotate-45 border-2 border-gold/60 flex items-center justify-center bg-gold/5">
           <span className="-rotate-45 font-tamil text-sm font-bold text-gold-dark">{number}</span>
@@ -81,14 +81,20 @@ export default function KuralCard({ number, tamil, tamilMeaning, englishMeaning,
         </div>
       </div>
 
-      <KuralText tamil={tamil} baseSizePx={showFull ? 28 : 22} className="mb-5" />
+      <KuralText
+        tamil={tamil}
+        baseSizePx={showFull ? 28 : 23}
+        minSizePx={showFull ? 12 : 14}
+        lineHeight={showFull ? 1.76 : 1.66}
+        className="mb-5"
+      />
 
       {showFull && tamilMeaning && (
         <div className="mb-4">
           <div className="kolam-divider text-xs font-medium text-gold-dark mb-2">
             <span>{t('tamilMeaning')}</span>
           </div>
-          <p className="font-tamil text-base text-gray leading-relaxed">{tamilMeaning}</p>
+          <p className="font-tamil text-base sm:text-[1.05rem] text-gray leading-[1.72] font-medium">{tamilMeaning}</p>
         </div>
       )}
 
@@ -97,7 +103,7 @@ export default function KuralCard({ number, tamil, tamilMeaning, englishMeaning,
           <div className="kolam-divider text-xs font-medium text-gold-dark mb-2">
             <span>{t('meaning')}</span>
           </div>
-          <p className={`text-sm text-gray leading-relaxed ${!showFull ? 'line-clamp-2' : ''}`}>{englishMeaning}</p>
+          <p className={`text-sm sm:text-[0.98rem] text-gray leading-[1.72] font-normal ${!showFull ? 'line-clamp-2' : ''}`}>{englishMeaning}</p>
         </div>
       )}
 

@@ -1,15 +1,56 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect, useDeferredValue, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useKurals } from '../hooks/useKurals'
 import { useLanguage } from '../contexts/LanguageContext'
-import type { Kural } from '../hooks/useKurals'
+import type { CategoryData, Kural } from '../hooks/useKurals'
 import SearchBar from '../components/SearchBar'
 import KuralCard from '../components/KuralCard'
 
 type MatchMode = 'contains' | 'start' | 'end'
+const QUERY_PARAM_SYNC_DEBOUNCE_MS = 180
+const MAX_VISIBLE_RESULTS = 50
+const RESULTS_BATCH_SIZE = 8
+const RESULTS_BATCH_INTERVAL_MS = 24
 
 const isMatchMode = (value: string | null): value is MatchMode => {
   return value === 'contains' || value === 'start' || value === 'end'
+}
+
+const parseChaptersFromParams = (params: URLSearchParams, categories: CategoryData[]) => {
+  const next = new Set<number>()
+
+  const chaptersParam = params.get('chapters')
+  if (chaptersParam) {
+    chaptersParam
+      .split(',')
+      .map(chunk => Number.parseInt(chunk, 10))
+      .filter(num => !Number.isNaN(num) && num >= 1 && num <= 133)
+      .forEach(num => next.add(num))
+  }
+
+  const chapterParam = Number.parseInt(params.get('chapter') || '', 10)
+  if (!Number.isNaN(chapterParam) && chapterParam >= 1 && chapterParam <= 133) {
+    next.add(chapterParam)
+  }
+
+  const categoryParam = (params.get('category') || '').toLowerCase()
+  if (categoryParam) {
+    const category = categories.find(c => c.name.toLowerCase() === categoryParam || c.englishName.toLowerCase() === categoryParam)
+    category?.chapters.forEach(ch => next.add(ch.number))
+  }
+
+  return next
+}
+
+const writeChaptersToParams = (params: URLSearchParams, chapters: Set<number>) => {
+  params.delete('category')
+  params.delete('chapter')
+  params.delete('chapters')
+
+  if (chapters.size > 0) {
+    const serialized = Array.from(chapters).sort((a, b) => a - b).join(',')
+    params.set('chapters', serialized)
+  }
 }
 
 const normalizeToken = (value: string) =>
@@ -32,43 +73,83 @@ const extractBoundaryWords = (tamilText: string) => {
   }
 }
 
+const toChapterKey = (chapters: Set<number>) =>
+  Array.from(chapters).sort((a, b) => a - b).join(',')
+
 export default function Search() {
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [filterOpen, setFilterOpen] = useState(false)
   const { searchKurals, categories, kurals } = useKurals()
   const { t, lang, getMeaning, getCategoryName, getChapterName } = useLanguage()
-  const paramsKey = searchParams.toString()
 
-  const parseChaptersFromParams = (params: URLSearchParams) => {
+  const queryFromParams = searchParams.get('q') || ''
+  const [queryInput, setQueryInput] = useState(() => queryFromParams)
+  const queryEditedRef = useRef(false)
+  const deferredQueryInput = useDeferredValue(queryInput)
+  const normalizedInput = queryInput.trim()
+  const activeQuery = deferredQueryInput.trim()
+  const isSearchPending = normalizedInput !== activeQuery
+  const queryLabel = isSearchPending ? normalizedInput : activeQuery
+  const matchMode: MatchMode = isMatchMode(searchParams.get('match')) ? (searchParams.get('match') as MatchMode) : 'contains'
+  const selectedChapters = useMemo(() => parseChaptersFromParams(searchParams, categories), [searchParams, categories])
+  const selectedChaptersKey = useMemo(() => toChapterKey(selectedChapters), [selectedChapters])
+  const deferredSelectedChaptersKey = useDeferredValue(selectedChaptersKey)
+  const deferredSelectedChapters = useMemo(() => {
     const next = new Set<number>()
-
-    const chapterParam = Number.parseInt(params.get('chapter') || '', 10)
-    if (!Number.isNaN(chapterParam)) {
-      next.add(chapterParam)
-    }
-
-    const categoryParam = (params.get('category') || '').toLowerCase()
-    if (categoryParam) {
-      const category = categories.find(c => c.name.toLowerCase() === categoryParam)
-      category?.chapters.forEach(ch => next.add(ch.number))
-    }
-
+    if (!deferredSelectedChaptersKey) return next
+    deferredSelectedChaptersKey
+      .split(',')
+      .map(chunk => Number.parseInt(chunk, 10))
+      .filter(num => !Number.isNaN(num))
+      .forEach(num => next.add(num))
     return next
-  }
-
-  const [query, setQuery] = useState(searchParams.get('q') || '')
-  const [matchMode, setMatchMode] = useState<MatchMode>(isMatchMode(searchParams.get('match')) ? (searchParams.get('match') as MatchMode) : 'contains')
-  const [selectedChapters, setSelectedChapters] = useState<Set<number>>(() => parseChaptersFromParams(searchParams))
-
-  useEffect(() => {
-    const nextQuery = searchParams.get('q') || ''
-    const nextMode = isMatchMode(searchParams.get('match')) ? (searchParams.get('match') as MatchMode) : 'contains'
-    setQuery(nextQuery)
-    setMatchMode(nextMode)
-    setSelectedChapters(parseChaptersFromParams(searchParams))
-  }, [paramsKey, categories])
+  }, [deferredSelectedChaptersKey])
 
   const hasFilters = selectedChapters.size > 0
+  const effectiveHasFilters = deferredSelectedChapters.size > 0
+  const isFilterPending = selectedChaptersKey !== deferredSelectedChaptersKey
+
+  const updateSearchParams = useCallback(
+    (updater: (params: URLSearchParams) => void) => {
+      setSearchParams((currentParams) => {
+        const next = new URLSearchParams(currentParams)
+        updater(next)
+        return next
+      }, { replace: true })
+    },
+    [setSearchParams]
+  )
+
+  useEffect(() => {
+    if (!queryEditedRef.current) return
+
+    const normalizedInput = queryInput.trim()
+    const normalizedQueryParam = queryFromParams.trim()
+    const shouldSyncQuery = normalizedInput !== normalizedQueryParam
+    const shouldResetMatch = matchMode !== 'contains'
+
+    if (!shouldSyncQuery && !shouldResetMatch) {
+      queryEditedRef.current = false
+      return
+    }
+
+    const timer = window.setTimeout(() => {
+      updateSearchParams((params) => {
+        if (normalizedInput) {
+          params.set('q', normalizedInput)
+        } else {
+          params.delete('q')
+        }
+
+        if (params.get('match') === 'start' || params.get('match') === 'end') {
+          params.delete('match')
+        }
+      })
+      queryEditedRef.current = false
+    }, QUERY_PARAM_SYNC_DEBOUNCE_MS)
+
+    return () => window.clearTimeout(timer)
+  }, [queryInput, queryFromParams, matchMode, updateSearchParams])
 
   const isCategorySelected = (catName: string) => {
     const cat = categories.find(c => c.name === catName)
@@ -86,13 +167,15 @@ export default function Search() {
   const toggleCategory = (catName: string) => {
     const cat = categories.find(c => c.name === catName)
     if (!cat) return
+
     const next = new Set(selectedChapters)
     if (isCategorySelected(catName)) {
       cat.chapters.forEach(ch => next.delete(ch.number))
     } else {
       cat.chapters.forEach(ch => next.add(ch.number))
     }
-    setSelectedChapters(next)
+
+    updateSearchParams((params) => writeChaptersToParams(params, next))
   }
 
   const toggleChapter = (chapterNumber: number) => {
@@ -102,10 +185,16 @@ export default function Search() {
     } else {
       next.add(chapterNumber)
     }
-    setSelectedChapters(next)
+
+    updateSearchParams((params) => writeChaptersToParams(params, next))
   }
 
-  const clearFilters = () => setSelectedChapters(new Set())
+  const clearFilters = () =>
+    updateSearchParams((params) => {
+      params.delete('category')
+      params.delete('chapter')
+      params.delete('chapters')
+    })
 
   const getLocalizedCategoryName = (englishName: string) =>
     getCategoryName(englishName) || t(englishName.toLowerCase()) || englishName
@@ -116,17 +205,17 @@ export default function Search() {
   }
 
   const handleQueryChange = (value: string) => {
-    setQuery(value)
-    if (matchMode !== 'contains') setMatchMode('contains')
+    queryEditedRef.current = true
+    setQueryInput(value)
   }
 
   const results = useMemo(() => {
     let filtered: Kural[]
-    if (query.trim()) {
+    if (activeQuery) {
       if (matchMode === 'contains') {
-        filtered = searchKurals(query)
+        filtered = searchKurals(activeQuery)
       } else {
-        const needle = normalizeToken(query)
+        const needle = normalizeToken(activeQuery)
         filtered = needle
           ? kurals.filter((k) => {
               const { first, last } = extractBoundaryWords(k.tamil)
@@ -134,17 +223,64 @@ export default function Search() {
             })
           : []
       }
-      if (hasFilters) {
-        filtered = filtered.filter(k => selectedChapters.has(k.chapter))
+      if (effectiveHasFilters) {
+        filtered = filtered.filter(k => deferredSelectedChapters.has(k.chapter))
       }
-    } else if (hasFilters) {
-      filtered = kurals.filter(k => selectedChapters.has(k.chapter))
+    } else if (effectiveHasFilters) {
+      filtered = kurals.filter(k => deferredSelectedChapters.has(k.chapter))
     } else {
       filtered = []
     }
 
     return filtered.sort((a, b) => a.number - b.number)
-  }, [query, matchMode, selectedChapters, hasFilters, searchKurals, kurals])
+  }, [activeQuery, matchMode, deferredSelectedChapters, effectiveHasFilters, searchKurals, kurals])
+
+  const visibleResultTarget = Math.min(results.length, MAX_VISIBLE_RESULTS)
+  const [visibleResultsCount, setVisibleResultsCount] = useState(0)
+
+  useEffect(() => {
+    const total = visibleResultTarget
+    let intervalId: number | undefined
+
+    const startId = window.setTimeout(() => {
+      if (total <= 12) {
+        setVisibleResultsCount(total)
+        return
+      }
+
+      setVisibleResultsCount(Math.min(RESULTS_BATCH_SIZE, total))
+      intervalId = window.setInterval(() => {
+        setVisibleResultsCount((prev) => {
+          const next = Math.min(prev + RESULTS_BATCH_SIZE, total)
+          if (next >= total && intervalId) {
+            window.clearInterval(intervalId)
+            intervalId = undefined
+          }
+          return next
+        })
+      }, RESULTS_BATCH_INTERVAL_MS)
+    }, 0)
+
+    return () => {
+      window.clearTimeout(startId)
+      if (intervalId) window.clearInterval(intervalId)
+    }
+  }, [visibleResultTarget, activeQuery, matchMode, deferredSelectedChaptersKey])
+
+  const visibleResults = useMemo(
+    () => results.slice(0, Math.min(visibleResultsCount, MAX_VISIBLE_RESULTS)),
+    [results, visibleResultsCount]
+  )
+
+  const isResultRenderPending = visibleResultsCount < visibleResultTarget
+  const isLoaderVisible = isSearchPending || isFilterPending || isResultRenderPending
+  const loaderText = isSearchPending
+    ? `${t('search')}...`
+    : isFilterPending
+    ? `${t('filterByChapter')}...`
+    : `${t('results')}...`
+
+  const shouldAnimateResults = results.length <= 12
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
@@ -157,7 +293,7 @@ export default function Search() {
 
       <div className="flex items-center gap-2 mb-4 animate-fade-in-up">
         <div className="flex-1">
-          <SearchBar value={query} onChange={handleQueryChange} placeholder={t('searchPlaceholder')} autoFocus />
+          <SearchBar value={queryInput} onChange={handleQueryChange} placeholder={t('searchPlaceholder')} autoFocus />
         </div>
         <button
           onClick={() => setFilterOpen(!filterOpen)}
@@ -178,6 +314,13 @@ export default function Search() {
           )}
         </button>
       </div>
+
+      {isLoaderVisible && (
+        <div className="mb-4 inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-gold/10 border border-gold/25 text-gold-dark text-sm font-semibold animate-fade-in">
+          <span className="w-4 h-4 rounded-full border-2 border-gold/35 border-t-gold animate-spin" aria-hidden="true" />
+          <span>{loaderText}</span>
+        </div>
+      )}
 
       {filterOpen && (
         <div className="mb-6 palm-leaf-card p-5 animate-fade-in space-y-5">
@@ -304,15 +447,15 @@ export default function Search() {
       )}
 
       <div>
-        {(query.trim() || hasFilters) && (
+        {(queryLabel || hasFilters || effectiveHasFilters) && (
           <p className="text-sm text-gray mb-4">
             <span className="font-tamil font-medium">{results.length}</span> {results.length !== 1 ? t('results') : t('result')}
-            {query.trim() && <> {t('for')} "{query}"</>}
+            {queryLabel && <> {t('for')} "{queryLabel}"</>}
             {hasFilters && <span className="text-gray-light"> {t('filtered')}</span>}
           </p>
         )}
 
-        {!query.trim() && !hasFilters && (
+        {!activeQuery && !effectiveHasFilters && !isFilterPending && (
           <div className="text-center py-16 animate-fade-in">
             <div className="text-4xl mb-4 opacity-30">&#10043;</div>
             <p className="text-lg text-gray/60 mb-2">{t('searchEmpty')}</p>
@@ -320,8 +463,8 @@ export default function Search() {
           </div>
         )}
 
-        <div className="space-y-3 stagger-children">
-          {results.slice(0, 50).map(kural => (
+        <div className={`space-y-3 ${shouldAnimateResults ? 'stagger-children' : ''}`}>
+          {visibleResults.map(kural => (
             <KuralCard
               key={kural.number}
               number={kural.number}
@@ -329,7 +472,7 @@ export default function Search() {
               englishMeaning={getMeaning(kural.number) || kural.englishMeaning}
             />
           ))}
-          {results.length > 50 && (
+          {results.length > MAX_VISIBLE_RESULTS && (
             <p className="text-center text-sm text-gray-light py-4">
               {t('showingFirst50')}
             </p>

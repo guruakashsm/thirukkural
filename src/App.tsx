@@ -15,6 +15,7 @@ import Explore from './pages/Explore'
 import About from './pages/About'
 import HowToRead from './pages/HowToRead'
 import Contact from './pages/Contact'
+import InstallPrompt from './components/InstallPrompt'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -44,6 +45,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
+      <InstallPrompt />
       <Footer />
     </div>
   )

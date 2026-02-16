@@ -60,6 +60,31 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes audioPlayBreath {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+
+@keyframes audioPlayRing {
+  0% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(1.45);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.45);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
 body {
   font-family: var(--font-inter);
   background-color: var(--color-cream);
@@ -75,6 +100,135 @@ body {
 
 .font-tamil {
   font-family: var(--font-tamil);
+}
+
+.breadcrumbs-shell {
+  position: relative;
+  border-radius: 1rem;
+  border: 1px solid rgba(198, 167, 94, 0.24);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(245, 236, 215, 0.78));
+  box-shadow: 0 10px 24px -22px rgba(92, 61, 46, 0.8);
+  padding: 0.5rem 0.6rem;
+  overflow: hidden;
+}
+
+.breadcrumbs-shell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(198, 167, 94, 0.7), transparent);
+  pointer-events: none;
+}
+
+.breadcrumbs-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  border-radius: 0.7rem;
+  padding: 0.34rem 0.62rem;
+  font-size: 0.74rem;
+  line-height: 1;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.25s ease;
+}
+
+.breadcrumbs-chip-link {
+  color: var(--color-gray);
+  border: 1px solid transparent;
+}
+
+.breadcrumbs-chip-link:hover {
+  color: var(--color-dark);
+  border-color: rgba(198, 167, 94, 0.36);
+  background: rgba(198, 167, 94, 0.12);
+  transform: translateY(-1px);
+}
+
+.breadcrumbs-chip-current {
+  color: #5d4919;
+  border: 1px solid rgba(168, 139, 62, 0.34);
+  background: linear-gradient(135deg, rgba(212, 186, 122, 0.26), rgba(198, 167, 94, 0.18));
+  font-weight: 600;
+}
+
+.breadcrumbs-home-glyph {
+  color: var(--color-gold-dark);
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.breadcrumbs-separator {
+  color: rgba(168, 139, 62, 0.66);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .breadcrumbs-chip {
+    font-size: 0.82rem;
+    padding: 0.38rem 0.68rem;
+  }
+}
+
+.reveal-section {
+  opacity: 0;
+  filter: blur(1.5px);
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.6s ease;
+}
+
+.reveal-section.is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+.interactive-hover-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.interactive-hover-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(212, 186, 122, 0.22), transparent 65%);
+  transition: opacity 0.35s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .interactive-hover-card {
+    transition:
+      transform 0.35s cubic-bezier(0.2, 0.75, 0.2, 1),
+      box-shadow 0.35s ease,
+      border-color 0.35s ease;
+  }
+
+  .interactive-hover-card:hover::after {
+    opacity: 1;
+  }
+}
+
+/* Kural text 4+3 word structure */
+.kural-line-group + .kural-line-group {
+  margin-top: 0.35em;
+}
+
+.kural-line-group .kural-line + .kural-line {
+  padding-left: 1em;
 }
 
 /* Palm leaf manuscript card */
@@ -337,6 +491,29 @@ body {
   opacity: 0.65;
 }
 
+.audio-play-btn {
+  position: relative;
+  transform-origin: center;
+}
+
+.audio-play-btn::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  border: 1px solid rgba(168, 139, 62, 0.45);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.audio-play-btn-active {
+  animation: audioPlayBreath 2.2s ease-in-out infinite;
+}
+
+.audio-play-btn-active::after {
+  animation: audioPlayRing 1.8s ease-out infinite;
+}
+
 .audio-progress {
   appearance: none;
   -webkit-appearance: none;
@@ -593,6 +770,23 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal-section,
+  .reveal-section.is-visible {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+
+  .audio-play-btn-active,
+  .audio-play-btn-active::after {
+    animation: none;
+  }
+
   .howto-card,
   .howto-card::after,
   .howto-subcard,

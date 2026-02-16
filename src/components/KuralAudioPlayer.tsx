@@ -200,7 +200,7 @@ export default function KuralAudioPlayer({
       <div className="flex items-center gap-2.5">
         <button
           onClick={togglePlayback}
-          className="w-10 h-10 rounded-full bg-gradient-to-br from-gold/30 to-gold/15 border border-gold/35 text-gold-dark hover:from-gold/45 hover:to-gold/25 transition-all duration-300 flex items-center justify-center cursor-pointer shadow-[0_8px_20px_-14px_rgba(146,108,24,0.8)] hover:shadow-[0_14px_26px_-16px_rgba(146,108,24,0.9)]"
+          className={`audio-play-btn w-10 h-10 rounded-full bg-gradient-to-br from-gold/30 to-gold/15 border border-gold/35 text-gold-dark hover:from-gold/45 hover:to-gold/25 transition-all duration-300 flex items-center justify-center cursor-pointer shadow-[0_8px_20px_-14px_rgba(146,108,24,0.8)] hover:shadow-[0_14px_26px_-16px_rgba(146,108,24,0.9)] ${isPlaying ? 'audio-play-btn-active' : ''}`}
           aria-label={isPlaying ? t('pauseAudio') : t('playAudio')}
           title={isPlaying ? t('pauseAudio') : t('playAudio')}
         >

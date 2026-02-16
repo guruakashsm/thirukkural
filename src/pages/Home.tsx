@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom'
-import { useState, useEffect, useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useRef, type MouseEvent, type KeyboardEvent } from 'react'
 import { useKurals } from '../hooks/useKurals'
 import { useLanguage } from '../contexts/LanguageContext'
 import CategoryCard from '../components/CategoryCard'
 import KuralText from '../components/KuralText'
+import RevealSection from '../components/RevealSection'
 import img1 from '../assets/thiruvalluvar.png'
 import img4 from '../assets/thiruvalluvar4-clean.png'
 import img5 from '../assets/thiruvalluvar5-clean.png'
@@ -19,6 +20,7 @@ function getImageForKural(kuralNumber: number) {
 }
 
 export default function Home() {
+  const navigate = useNavigate()
   const { getKuralOfTheDay, categories, getCategory, toggleBookmark, isBookmarked } = useKurals()
   const { t, lang, getMeaning, getChapterName } = useLanguage()
   const [dayOffset, setDayOffset] = useState(0)
@@ -90,14 +92,43 @@ export default function Home() {
     setTimeout(() => setCopied(false), 2000)
   }
 
+  const handleHeroCardNavigate = () => {
+    navigate(`/kural/${kural.number}`)
+  }
+
+  const isInteractiveTarget = (target: EventTarget | null) => {
+    if (!(target instanceof Element)) return false
+    return Boolean(target.closest('button'))
+  }
+
+  const handleHeroCardClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (isInteractiveTarget(event.target)) return
+    handleHeroCardNavigate()
+  }
+
+  const handleHeroCardKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) return
+    if (isInteractiveTarget(event.target)) return
+    if (event.key !== 'Enter' && event.key !== ' ') return
+    event.preventDefault()
+    handleHeroCardNavigate()
+  }
+
   const catData = getCategory(kural.category)
   const displayCategoryName = catData ? t(catData.englishName.toLowerCase()) : ''
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Hero: Kural of the Day */}
-      <section className="mb-16 animate-fade-in">
-        <div className="relative rounded-2xl shadow-2xl overflow-hidden group">
+      <RevealSection className="mb-16" delayMs={20}>
+        <div
+          className="relative rounded-2xl shadow-2xl overflow-hidden group cursor-pointer"
+          role="link"
+          tabIndex={0}
+          aria-label={`${t('kural')} ${kural.number}`}
+          onClick={handleHeroCardClick}
+          onKeyDown={handleHeroCardKeyDown}
+        >
           <div className="absolute inset-0 hero-card-bg" />
           <div className="absolute inset-0 paper-texture" />
           <div className="absolute inset-0 opacity-[0.04]" style={{
@@ -114,7 +145,7 @@ export default function Home() {
           <div className="absolute right-0 top-1/4 bottom-1/4 w-[2px] bg-gradient-to-b from-transparent via-terracotta/20 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-gold-dark/20 via-gold/50 to-gold-dark/20" />
 
-          <div className="relative z-10 px-6 pt-6 md:px-8 flex items-center justify-between">
+          <div className="relative z-10 px-3 pt-4 sm:px-6 sm:pt-6 md:px-8 flex items-center justify-between">
             <div className="bg-[#8B1A1A]/90 px-4 py-1.5 rounded-lg flex items-center gap-2 shadow-sm">
               <span className="text-gold-light text-xs">&#10043;</span>
               <span className="font-tamil text-sm font-bold text-gold-light tracking-wide">{t('kuralOfTheDay')}</span>
@@ -174,24 +205,23 @@ export default function Home() {
               </div>
             </div>
 
-            <div className={`flex-1 min-w-0 p-6 md:p-8 lg:p-10 md:pt-4 ${
+            <div className={`flex-1 min-w-0 p-4 sm:p-6 md:p-8 lg:p-10 md:pt-4 ${
               slideDir === 'right' ? 'animate-slide-right' : slideDir === 'left' ? 'animate-slide-left' : ''
             }`} key={kural.number}>
               <div className="flex flex-wrap items-center gap-2.5 mb-5">
                 <span className="font-tamil text-sm font-bold text-[#8B1A1A]">{t('kural')} {kural.number}</span>
                 <span className="text-[#8B1A1A]/25">|</span>
-                <Link
-                  to={`/browse?chapter=${kural.chapter}&focus=division`}
-                  className="no-underline group/chapter"
+                <span
+                  className="group/chapter"
                   title={`${t('chapter')} ${kural.chapter}`}
                 >
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-temple-brown/10 text-temple-brown border border-temple-brown/20 transition-all duration-300 group-hover/chapter:border-temple-brown/35 group-hover/chapter:bg-temple-brown/15">
                     <span className="font-tamil">{kural.chapterName}</span>
-                    <span className="opacity-40">|</span>
-                    <span>{getChapterName(kural.chapter) || kural.chapterEnglish}</span>
+                    <span className="opacity-40 hidden sm:inline">|</span>
+                    <span className="hidden sm:inline">{getChapterName(kural.chapter) || kural.chapterEnglish}</span>
                   </span>
-                </Link>
-                <Link to={`/browse?category=${encodeURIComponent(kural.category)}&focus=division`} className="no-underline group/badge">
+                </span>
+                <span className="group/badge">
                   <span
                     className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-white shadow-sm transition-all duration-300 group-hover/badge:shadow-md group-hover/badge:scale-105"
                     style={{ backgroundColor: catData?.color || '#C6A75E' }}
@@ -200,14 +230,12 @@ export default function Home() {
                     <span className="opacity-60">|</span>
                     <span>{displayCategoryName}</span>
                   </span>
-                </Link>
+                </span>
               </div>
 
               <div className="mb-6">
                 <div
-                  className="cursor-pointer group/kural"
-                  onClick={handleCopyKural}
-                  title={t('copyKural')}
+                  className="group/kural"
                 >
                   <KuralText tamil={kural.tamil} baseSizePx={30} className="text-[#3D1C00] group-hover/kural:text-[#8B1A1A] transition-colors duration-300" />
                 </div>
@@ -235,15 +263,6 @@ export default function Home() {
               </div>
 
               <div className="flex items-center gap-2.5 pt-2">
-                <Link
-                  to={`/kural/${kural.number}`}
-                  className="group/btn px-5 py-2.5 rounded-xl bg-[#8B1A1A] text-gold-light text-sm font-medium hover:bg-[#7A1515] hover:shadow-lg active:scale-95 transition-all no-underline duration-300 flex items-center gap-2 shadow-sm"
-                >
-                  <span>{t('readMore')}</span>
-                  <svg className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
                 <button
                   onClick={handleBookmark}
                   className={`p-2.5 rounded-xl border transition-all cursor-pointer duration-300 active:scale-90 ${
@@ -289,10 +308,10 @@ export default function Home() {
             />
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       {/* Categories */}
-      <section className="mb-16">
+      <RevealSection className="mb-16" delayMs={40}>
         <div className="text-center mb-8">
           <h2 className="font-tamil text-2xl md:text-3xl font-semibold text-dark ornamental-underline">
             {t('divisions')}
@@ -306,16 +325,17 @@ export default function Home() {
               name={cat.name}
               tamilName={cat.tamilName}
               englishName={cat.englishName}
+              description={cat.description}
               icon={cat.icon}
               chapterCount={cat.chapters.length}
               color={cat.color}
             />
           ))}
         </div>
-      </section>
+      </RevealSection>
 
       {/* Stats */}
-      <section className="py-12">
+      <RevealSection className="py-12" delayMs={60}>
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
           <Link to="/browse" className="text-center group hover:scale-105 transition-transform no-underline">
             <p className="font-tamil text-4xl font-bold gold-gradient-text">1330</p>
@@ -332,16 +352,16 @@ export default function Home() {
             <p className="text-sm text-gray mt-1">{t('divisions')}</p>
           </Link>
         </div>
-      </section>
+      </RevealSection>
 
       {/* Why Thirukkural Matters Today */}
-      <section className="mb-12 animate-fade-in">
+      <RevealSection className="mb-12" delayMs={80}>
         <div className="relative rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #FDF8EE 0%, #F5EDD6 100%)' }}>
           <div className="absolute inset-0 opacity-[0.03]" style={{
             backgroundImage: 'radial-gradient(circle, #8B4513 1px, transparent 1px)',
             backgroundSize: '20px 20px'
           }} />
-          <div className="relative p-8 md:p-10">
+          <div className="relative p-5 sm:p-8 md:p-10">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-gold/15 border border-gold/25 flex items-center justify-center text-lg">
                 🪔
@@ -350,7 +370,7 @@ export default function Home() {
                 {t('whyThirukkuralMatters')}
               </h2>
             </div>
-            <div className="space-y-3 ml-13">
+            <div className="space-y-3 ml-[3.25rem]">
               <p className="text-sm md:text-base text-gray leading-relaxed">
                 {t('whyThirukkuralMattersP1')}
               </p>
@@ -358,7 +378,7 @@ export default function Home() {
                 {t('whyThirukkuralMattersP2')}
               </p>
             </div>
-            <div className="mt-6 ml-13">
+            <div className="mt-6 ml-[3.25rem]">
               <Link
                 to="/history"
                 className="text-gold-dark hover:text-gold text-sm font-medium transition-colors no-underline"
@@ -368,13 +388,13 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </RevealSection>
 
       {/* Did You Know? */}
-      <section className="mb-12 animate-fade-in">
+      <RevealSection className="mb-12" delayMs={100}>
         <div className="relative rounded-2xl border border-gold/20 overflow-hidden bg-white">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0 opacity-40" />
-          <div className="p-8 md:p-10">
+          <div className="p-5 sm:p-8 md:p-10">
             <div className="flex items-center gap-3 mb-5">
               <span className="text-2xl">💡</span>
               <h2 className="text-xl md:text-2xl font-bold text-dark">
@@ -386,19 +406,30 @@ export default function Home() {
                 { icon: '🌍', text: t('fact1') },
                 { icon: '📏', text: t('fact2') },
                 { icon: '🏛️', text: t('fact3') },
-                { icon: '📅', text: t('fact4') }
+                { icon: '📅', text: t('fact4') },
+                { icon: '🗣️', text: t('fact5'), to: '/kural/341' },
+                { icon: '❌', text: t('fact6') },
+                { icon: '🔤', text: t('fact7') },
+                { icon: '📖', text: t('fact8') },
               ].map((fact, i) => (
                 <div key={i} className="flex gap-3 p-4 rounded-xl bg-cream/50 border border-gold/10">
                   <span className="text-xl shrink-0 mt-0.5">{fact.icon}</span>
-                  <p className="text-sm text-gray leading-relaxed">
-                    {fact.text}
-                  </p>
+                  <div>
+                    <p className="text-sm text-gray leading-relaxed">
+                      {fact.text}
+                    </p>
+                    {'to' in fact && fact.to && (
+                      <Link to={fact.to} className="text-xs text-gold-dark hover:text-gold font-medium no-underline mt-1 inline-block">
+                        {t('readMore')} →
+                      </Link>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </section>
+      </RevealSection>
     </div>
   )
 }

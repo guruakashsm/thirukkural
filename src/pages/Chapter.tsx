@@ -3,17 +3,19 @@ import { useKurals } from '../hooks/useKurals'
 import { useLanguage } from '../contexts/LanguageContext'
 import KuralCard from '../components/KuralCard'
 import ChapterOverview from '../components/ChapterOverview'
+import Breadcrumbs from '../components/Breadcrumbs'
 
 export default function Chapter() {
   const { number } = useParams<{ number: string }>()
   const { getKuralsByChapter, categories } = useKurals()
-  const { t, getChapterName, getMeaning } = useLanguage()
+  const { t, lang, getChapterName, getMeaning, getCategoryName } = useLanguage()
 
   const chapterNumber = parseInt(number || '1')
   const kurals = getKuralsByChapter(chapterNumber)
 
   let chapterInfo: { name: string; englishName: string } | undefined
   let categoryName = ''
+  let categoryEnglishName = ''
   let chapterIcon = ''
   let categoryColor = ''
   for (const cat of categories) {
@@ -21,6 +23,7 @@ export default function Chapter() {
     if (ch) {
       chapterInfo = ch
       categoryName = cat.name
+      categoryEnglishName = cat.englishName
       chapterIcon = ch.icon || cat.icon
       categoryColor = cat.color
       break
@@ -37,18 +40,20 @@ export default function Chapter() {
   }
 
   const translatedChapterName = getChapterName(chapterNumber) || chapterInfo.englishName
+  const translatedCategoryName =
+    getCategoryName(categoryEnglishName) || t(categoryEnglishName.toLowerCase()) || categoryName
+  const breadcrumbChapterName = lang === 'ta' ? chapterInfo.name : translatedChapterName
+  const chapterBreadcrumbLabel = `${chapterNumber}. ${breadcrumbChapterName}`
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 animate-fade-in">
-      <Link
-        to={`/browse?category=${encodeURIComponent(categoryName)}&focus=division`}
-        className="text-gray hover:text-gold-dark transition-colors text-sm no-underline flex items-center gap-1 mb-6"
-      >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
-        {t('back')}
-      </Link>
+      <Breadcrumbs
+        items={[
+          { label: t('home'), to: '/' },
+          { label: translatedCategoryName, to: `/category/${encodeURIComponent(categoryName)}` },
+          { label: chapterBreadcrumbLabel },
+        ]}
+      />
 
       <div className="text-center mb-8">
         <div
