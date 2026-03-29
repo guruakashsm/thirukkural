@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
 import { useKurals } from '../hooks/useKurals'
 import { useLanguage } from '../contexts/LanguageContext'
 import KuralText from './KuralText'
@@ -18,13 +18,27 @@ export default function KuralCard({ number, tamil, tamilMeaning, englishMeaning,
   const { toggleBookmark: toggleBM, isBookmarked: checkBookmarked, getKural, getCategory } = useKurals()
   const { t, lang, getMeaning, getChapterName } = useLanguage()
   const [bookmarked, setBookmarked] = useState(() => checkBookmarked(number))
+  const [shareOpen, setShareOpen] = useState(false)
+  const shareRef = useRef<HTMLDivElement>(null)
   const kuralData = getKural(number)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleChange = () => setBookmarked(checkBookmarked(number))
     window.addEventListener('bookmarks-changed', handleChange)
     return () => window.removeEventListener('bookmarks-changed', handleChange)
   }, [number, checkBookmarked])
+
+  useEffect(() => {
+    if (!shareOpen) return
+    const handler = (e: MouseEvent) => {
+      if (shareRef.current && !shareRef.current.contains(e.target as Node)) {
+        setShareOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [shareOpen])
 
   const toggleBookmark = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -69,15 +83,45 @@ export default function KuralCard({ number, tamil, tamilMeaning, englishMeaning,
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
             </svg>
           </button>
-          <button
-            onClick={handleShare}
-            className="p-2 rounded-full hover:text-gold text-gray-light transition-colors bg-transparent border-none cursor-pointer"
-            aria-label={t('share')}
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-            </svg>
-          </button>
+          <div className="relative" ref={shareRef}>
+            <button
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShareOpen(prev => !prev) }}
+              className="p-2 rounded-full hover:text-gold text-gray-light transition-colors bg-transparent border-none cursor-pointer"
+              aria-label={t('share')}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+            </button>
+
+            {shareOpen && (
+              <div
+                className="absolute right-0 top-full mt-1 z-50 bg-white rounded-xl shadow-xl border border-gold/20 py-1 min-w-[160px] animate-fade-in-up"
+                style={{ animationDuration: '150ms' }}
+                onClick={e => e.stopPropagation()}
+              >
+                <button
+                  onClick={async (e) => { e.preventDefault(); setShareOpen(false); await handleShare(e) }}
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-dark hover:bg-gold/6 transition-colors cursor-pointer bg-transparent border-none text-left"
+                >
+                  <svg className="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Share as Image
+                </button>
+                <div className="mx-3 border-t border-gold/10" />
+                <button
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShareOpen(false); navigate(`/widgets?n=${number}`) }}
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-dark hover:bg-gold/6 transition-colors cursor-pointer bg-transparent border-none text-left"
+                >
+                  <svg className="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                  Embed Widget
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

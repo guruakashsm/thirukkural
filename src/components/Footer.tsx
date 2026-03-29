@@ -17,6 +17,7 @@ export default function Footer() {
     { to: '/quiz', label: t('quiz') },
     { to: '/history', label: t('historyShort') },
     { to: '/explore', label: t('blog') },
+    { to: '/widgets', label: t('widgets') },
   ]
   const appUrl = typeof window !== 'undefined'
     ? window.location.href
@@ -86,7 +87,7 @@ export default function Footer() {
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
                 className="inline-flex items-center justify-center lg:justify-start gap-2 text-sm text-cream/80 hover:text-cream no-underline transition-colors"

@@ -98,6 +98,69 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Embedded Widget actions ─────────────────────────────────────────────── */
+
+.widget-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  border-radius: 10px;
+  padding: 4px 10px;
+  border: 1px solid color-mix(in srgb, var(--w-accent) 55%, transparent);
+  color: var(--w-link);
+  background: color-mix(in srgb, var(--w-bg) 92%, var(--w-accent) 8%);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.widget-action:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--w-accent) 72%, transparent);
+  background: color-mix(in srgb, var(--w-bg) 84%, var(--w-accent) 16%);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.16);
+}
+
+.widget-action:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.14);
+}
+
+.widget-action:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--w-accent) 32%, transparent),
+    0 10px 18px rgba(0, 0, 0, 0.16);
+}
+
+.widget-action--primary {
+  border-color: color-mix(in srgb, var(--w-accent) 85%, transparent);
+  background: color-mix(in srgb, var(--w-bg) 78%, var(--w-accent) 22%);
+  color: var(--w-link);
+}
+
+.widget-action--subtle {
+  padding: 3px 9px;
+  border-radius: 8px;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.widget-action--subtle:hover {
+  border-color: color-mix(in srgb, var(--w-accent) 30%, transparent);
+  background: color-mix(in srgb, var(--w-bg) 90%, var(--w-accent) 10%);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.12);
+}
+
 .font-tamil {
   font-family: var(--font-tamil);
 }

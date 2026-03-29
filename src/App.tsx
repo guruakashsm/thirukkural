@@ -15,6 +15,8 @@ import Explore from './pages/Explore'
 import About from './pages/About'
 import HowToRead from './pages/HowToRead'
 import Contact from './pages/Contact'
+import Widget from './pages/Widget'
+import WidgetBuilder from './pages/WidgetBuilder'
 import InstallPrompt from './components/InstallPrompt'
 
 function ScrollToTop() {
@@ -24,6 +26,17 @@ function ScrollToTop() {
 }
 
 function App() {
+  const { pathname } = useLocation()
+  const isWidgetEmbed = pathname === '/widget'
+
+  if (isWidgetEmbed) {
+    return (
+      <Routes>
+        <Route path="/widget" element={<Widget />} />
+      </Routes>
+    )
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-cream">
       <ScrollToTop />
@@ -43,6 +56,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/how-to-read" element={<HowToRead />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/widgets" element={<WidgetBuilder />} />
         </Routes>
       </main>
       <InstallPrompt />
