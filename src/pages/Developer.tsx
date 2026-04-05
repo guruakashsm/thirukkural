@@ -48,7 +48,7 @@ function FieldRow({ field, type, desc }: { field: string; type: string; desc: st
   )
 }
 
-const DATASET_URL = '/thirukkural-dataset.json'
+const DATASET_URL = './thirukkural-dataset.json'
 
 const KURAL_EXAMPLE = `{
   "number": 1,
@@ -159,7 +159,7 @@ const CATEGORY_EXAMPLE = `{
 }`
 
 const FETCH_EXAMPLE = `// Fetch the full dataset (once, then cache it)
-const response = await fetch('/thirukkural-dataset.json')
+const response = await fetch('https://guruakashsm.github.io/thirukkural/thirukkural-dataset.json')
 const dataset = await response.json()
 
 // Access metadata
