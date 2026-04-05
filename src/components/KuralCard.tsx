@@ -97,8 +97,7 @@ export default function KuralCard({ number, tamil, tamilMeaning, englishMeaning,
             {shareOpen && (
               <div
                 className="absolute right-0 top-full mt-1 z-50 rounded-xl shadow-xl border border-gold/20 py-1 min-w-[160px] animate-fade-in-up"
-                style={{ background: 'var(--color-cream)' }}
-                style={{ animationDuration: '150ms' }}
+                style={{ background: 'var(--color-cream)', animationDuration: '150ms' }}
                 onClick={e => e.stopPropagation()}
               >
                 <button

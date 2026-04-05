@@ -47,6 +47,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   })
 
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [showYouTube, setShowYouTubeState] = useState<boolean>(() => {
+    const saved = localStorage.getItem('app-show-youtube')
+    return saved !== null ? saved === 'true' : true
+  })
 
   useEffect(() => {
     applyTheme(theme)
@@ -69,8 +73,13 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   const openSettings = useCallback(() => setSettingsOpen(true), [])
   const closeSettings = useCallback(() => setSettingsOpen(false), [])
 
+  const setShowYouTube = useCallback((v: boolean) => {
+    setShowYouTubeState(v)
+    localStorage.setItem('app-show-youtube', String(v))
+  }, [])
+
   return (
-    <SettingsContext.Provider value={{ theme, setTheme, fontSize, setFontSize, settingsOpen, openSettings, closeSettings }}>
+    <SettingsContext.Provider value={{ theme, setTheme, fontSize, setFontSize, showYouTube, setShowYouTube, settingsOpen, openSettings, closeSettings }}>
       {children}
     </SettingsContext.Provider>
   )

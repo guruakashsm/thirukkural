@@ -397,6 +397,15 @@ export default function Developer() {
           <CodeBlock code={CATEGORY_EXAMPLE} lang="json — category object" />
         </section>
 
+        {/* Fetching example */}
+        <section className={cardClass}>
+          <SectionTitle icon="📡" title="Fetching the Dataset" />
+          <p className="text-sm md:text-base text-gray leading-relaxed mb-4">
+            Load the full dataset once and cache it — the file is served as static JSON.
+          </p>
+          <CodeBlock code={FETCH_EXAMPLE} lang="javascript" />
+        </section>
+
         {/* Language codes */}
         <section className={cardClass}>
           <SectionTitle icon="🌐" title="Language Reference" />
