@@ -76,7 +76,7 @@ export default function KuralText({
     <div
       ref={containerRef}
       className={`font-tamil font-semibold text-dark ${className}`}
-      style={{ fontSize: `${fontSize}px`, lineHeight }}
+      style={{ fontSize: `${fontSize}px`, lineHeight, overflow: 'hidden' }}
     >
       {tamil.split('\n').map((line, i) => {
         const parts = splitLine(line)

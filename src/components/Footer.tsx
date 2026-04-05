@@ -124,9 +124,21 @@ export default function Footer() {
           <p className="text-xs text-cream/40">
             © {new Date().getFullYear()} Thirukkural
           </p>
-          <p className="text-xs text-cream/45">
-            Version {APP_VERSION}
-          </p>
+          <div className="flex items-center gap-3">
+            <Link
+              to="/developer"
+              className="inline-flex items-center gap-1.5 text-xs text-cream/40 hover:text-cream/70 no-underline transition-colors"
+            >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+              Developer Dataset
+            </Link>
+            <span className="text-cream/20 text-xs">·</span>
+            <p className="text-xs text-cream/45">
+              Version {APP_VERSION}
+            </p>
+          </div>
         </div>
       </div>
     </footer>

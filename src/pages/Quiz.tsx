@@ -27,15 +27,16 @@ function QuizContent({ mode, onPlayAgain }: { mode: 'daily' | 'random'; onPlayAg
           <button
             key={i}
             onClick={() => {}}
-            className={`w-3 h-3 rounded-full border-none transition-all ${
+            className="w-3 h-3 rounded-full border-none transition-all"
+            style={
               i === currentIndex
-                ? 'bg-gold scale-125'
+                ? { backgroundColor: 'var(--color-gold)', transform: 'scale(1.25)' }
                 : answers[i] !== null
                 ? answers[i] === questions[i].correctIndex
-                  ? 'bg-green-400'
-                  : 'bg-red-400'
-                : 'bg-gold/20'
-            }`}
+                  ? { backgroundColor: 'var(--color-quiz-correct)' }
+                  : { backgroundColor: 'var(--color-quiz-wrong)' }
+                : { backgroundColor: 'color-mix(in srgb, var(--color-gold) 20%, transparent)' }
+            }
           />
         ))}
       </div>
@@ -94,7 +95,7 @@ function QuizContent({ mode, onPlayAgain }: { mode: 'daily' | 'random'; onPlayAg
             </button>
             <Link
               to="/"
-              className="px-5 py-2.5 rounded-xl bg-white border border-gold/20 text-gray text-sm hover:text-gold-dark transition-colors no-underline"
+              className="px-5 py-2.5 rounded-xl bg-cream border border-gold/20 text-gray text-sm hover:text-gold-dark transition-colors no-underline"
             >
               {t('home')}
             </Link>

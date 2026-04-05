@@ -14,7 +14,7 @@ function SectionTitle({ icon, title }: { icon: string; title: string }) {
 
 export default function About() {
   const { t } = useLanguage()
-  const sectionCard = 'group relative rounded-2xl border border-gold/20 bg-white p-5 md:p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(92,61,46,0.12)]'
+  const sectionCard = 'group relative rounded-2xl border border-gold/20 bg-cream p-5 md:p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(92,61,46,0.12)]'
 
   const sections = [
     { icon: '🪔', title: t('aboutVisionTitle'), body: t('aboutVisionBody') },
@@ -57,7 +57,7 @@ export default function About() {
         <div className="absolute top-1/3 -right-16 w-56 h-56 rounded-full bg-copper/10 blur-3xl" />
       </div>
 
-      <Link to="/" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm text-gold-dark hover:text-gold transition-colors no-underline mb-6 border border-gold/25 bg-white/70">
+      <Link to="/" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm text-gold-dark hover:text-gold transition-colors no-underline mb-6 border border-gold/25 bg-cream/80">
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
@@ -84,7 +84,7 @@ export default function About() {
 
       <div className="space-y-5">
         {sections.map((section) => (
-          <section key={section.title} className={section.title === t('aboutImproveTitle') ? `${sectionCard} bg-gradient-to-br from-white to-cream-dark/50` : sectionCard}>
+          <section key={section.title} className={section.title === t('aboutImproveTitle') ? `${sectionCard} bg-gradient-to-br from-cream to-cream-dark/50` : sectionCard}>
             <SectionTitle icon={section.icon} title={section.title} />
             <div className="space-y-3">
               {renderContent(section.body)}

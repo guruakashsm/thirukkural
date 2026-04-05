@@ -122,7 +122,7 @@ export default function Browse() {
         <select
           value={currentChapter}
           onChange={(e) => navigateToChapter(Number(e.target.value))}
-          className="flex-1 px-4 py-3 rounded-2xl border border-gold/20 bg-white/80 text-sm font-medium text-dark cursor-pointer hover:border-gold/40 transition-all appearance-none"
+          className="flex-1 px-4 py-3 rounded-2xl border border-gold/20 bg-cream/80 text-sm font-medium text-dark cursor-pointer hover:border-gold/40 transition-all appearance-none"
           style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23888\' stroke-width=\'2\'%3E%3Cpath d=\'M6 9l6 6 6-6\'/%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
         >
           {currentDivision?.chapters.map(ch => (
@@ -182,7 +182,7 @@ export default function Browse() {
           <button
             onClick={() => currentChapter > 1 && navigateToChapter(currentChapter - 1)}
             disabled={currentChapter <= 1}
-            className="flex items-center gap-1 px-3 py-2 rounded-xl text-sm border border-gold/20 bg-white/80 cursor-pointer hover:border-gold/40 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className="flex items-center gap-1 px-3 py-2 rounded-xl text-sm border border-gold/20 bg-cream/80 cursor-pointer hover:border-gold/40 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -195,7 +195,7 @@ export default function Browse() {
           <button
             onClick={() => currentChapter < 133 && navigateToChapter(currentChapter + 1)}
             disabled={currentChapter >= 133}
-            className="flex items-center gap-1 px-3 py-2 rounded-xl text-sm border border-gold/20 bg-white/80 cursor-pointer hover:border-gold/40 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className="flex items-center gap-1 px-3 py-2 rounded-xl text-sm border border-gold/20 bg-cream/80 cursor-pointer hover:border-gold/40 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <span className="hidden sm:inline">{t('nextChapter')}</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

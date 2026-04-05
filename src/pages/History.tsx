@@ -76,7 +76,7 @@ export default function History() {
 
       {/* About Thiruvalluvar */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #FDF8EE 0%, #F5EDD6 100%)' }}>
+        <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-cream to-parchment/60">
           <div className="p-6 md:p-8">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-gold/15 border border-gold/25 flex items-center justify-center text-lg">
@@ -93,7 +93,7 @@ export default function History() {
 
       {/* Origin */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-white">
+        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-cream">
           <div className="h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0 opacity-40" />
           <div className="p-6 md:p-8">
             <div className="flex items-center gap-3 mb-4">
@@ -111,7 +111,7 @@ export default function History() {
 
       {/* Structure */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #FDF8EE 0%, #F5EDD6 100%)' }}>
+        <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-cream to-parchment/60">
           <div className="p-6 md:p-8">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-gold/15 border border-gold/25 flex items-center justify-center text-lg">
@@ -142,7 +142,7 @@ export default function History() {
 
       {/* Cultural Significance */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-white">
+        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-cream">
           <div className="h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0 opacity-40" />
           <div className="p-6 md:p-8">
             <div className="flex items-center gap-3 mb-4">
@@ -160,7 +160,7 @@ export default function History() {
 
       {/* Global Recognition */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #FDF8EE 0%, #F5EDD6 100%)' }}>
+        <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-cream to-parchment/60">
           <div className="p-6 md:p-8">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-gold/15 border border-gold/25 flex items-center justify-center text-lg">
@@ -173,7 +173,7 @@ export default function History() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ml-13">
               {recognitionItems.map((item) => (
-                <div key={item.label} className="flex gap-3 p-4 rounded-xl bg-white/60 border border-gold/10">
+                <div key={item.label} className="flex gap-3 p-4 rounded-xl bg-cream/60 border border-gold/10">
                   <span className="text-xl shrink-0">{item.icon}</span>
                   <div>
                     <p className="text-sm font-bold text-dark">{item.label}</p>
@@ -188,7 +188,7 @@ export default function History() {
 
       {/* Literary Excellence */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-white">
+        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-cream">
           <div className="h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0 opacity-40" />
           <div className="p-6 md:p-8">
             <div className="flex items-center gap-3 mb-4">
@@ -206,7 +206,7 @@ export default function History() {
 
       {/* Textual Tradition */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #FDF8EE 0%, #F5EDD6 100%)' }}>
+        <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-cream to-parchment/60">
           <div className="p-6 md:p-8">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-gold/15 border border-gold/25 flex items-center justify-center text-lg">
@@ -231,7 +231,7 @@ export default function History() {
                 { label: t('statsAdhikaram'), value: 133 },
                 { label: t('statsKural'), value: 1330 },
               ].map((item) => (
-                <div key={item.label} className="rounded-xl border border-gold/25 bg-white/70 p-4 text-center">
+                <div key={item.label} className="rounded-xl border border-gold/25 bg-cream/70 p-4 text-center">
                   <p className="text-2xl font-bold text-gold-dark">{item.value}</p>
                   <p className="text-xs text-gray mt-1">{item.label}</p>
                 </div>
@@ -242,7 +242,7 @@ export default function History() {
               {t('textualTraditionP3')}
             </p>
 
-            <div className="mt-5 ml-13 rounded-xl border border-gold/25 bg-white/65 p-4">
+            <div className="mt-5 ml-13 rounded-xl border border-gold/25 bg-cream/65 p-4">
               <p className="text-sm md:text-base text-dark italic leading-relaxed">
                 {t('textualTraditionMedicineQuote')}
               </p>
@@ -257,7 +257,7 @@ export default function History() {
 
       {/* Interactive Literary Insights */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-white">
+        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-cream">
           <div className="h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0 opacity-40" />
           <div className="p-6 md:p-8">
             <div className="flex items-center gap-3 mb-5">
@@ -356,7 +356,7 @@ export default function History() {
 
       {/* Nature in Thirukkural */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #FDF8EE 0%, #F5EDD6 100%)' }}>
+        <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-cream to-parchment/60">
           <div className="p-5 sm:p-6 md:p-8">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-gold/15 border border-gold/25 flex items-center justify-center text-lg">
@@ -393,7 +393,7 @@ export default function History() {
 
       {/* Alphabet & Number Facts */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-white">
+        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-cream">
           <div className="h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0 opacity-40" />
           <div className="p-5 sm:p-6 md:p-8">
             <div className="flex items-center gap-3 mb-4">
@@ -435,7 +435,7 @@ export default function History() {
 
       {/* The Kural Where Lips Don't Close */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #FDF8EE 0%, #F5EDD6 100%)' }}>
+        <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-cream to-parchment/60">
           <div className="p-5 sm:p-6 md:p-8">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-gold/15 border border-gold/25 flex items-center justify-center text-lg">
@@ -446,7 +446,7 @@ export default function History() {
             <div className="ml-[3.25rem] space-y-4">
               <Link
                 to="/kural/341"
-                className="no-underline block rounded-xl border border-gold/30 bg-white/70 p-5 hover:border-gold/50 hover:shadow-md transition-all group"
+                className="no-underline block rounded-xl border border-gold/30 bg-cream/70 p-5 hover:border-gold/50 hover:shadow-md transition-all group"
               >
                 <p className="text-xs text-gold-dark font-semibold mb-2">{t('kural')} 341</p>
                 <p className="font-tamil text-lg md:text-xl font-semibold text-dark leading-relaxed group-hover:text-gold-dark transition-colors">
@@ -468,7 +468,7 @@ export default function History() {
 
       {/* Words Not Found in Thirukkural */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-white">
+        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-cream">
           <div className="h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0 opacity-40" />
           <div className="p-5 sm:p-6 md:p-8">
             <div className="flex items-center gap-3 mb-4">
@@ -500,10 +500,7 @@ export default function History() {
       </section>
       {/* Publication & Translation History */}
       <section className="mb-8 animate-fade-in">
-        <div
-          className="rounded-2xl overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, #FDF8EE 0%, #F5EDD6 100%)' }}
-        >
+        <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-cream to-parchment/60">
           <div className="p-5 sm:p-6 md:p-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full bg-gold/15 border border-gold/25 flex items-center justify-center text-lg">
@@ -544,7 +541,7 @@ export default function History() {
 
       {/* Literary Praise */}
       <section className="mb-8 animate-fade-in">
-        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-white">
+        <div className="rounded-2xl border border-gold/20 overflow-hidden bg-cream">
           <div className="h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0 opacity-40" />
           <div className="p-5 sm:p-6 md:p-8">
             <div className="flex items-center gap-3 mb-5">

@@ -99,7 +99,7 @@ export default function Explore() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {articles.map((article) => (
-            <div key={article.title} className="rounded-2xl border border-gold/20 overflow-hidden bg-white hover:shadow-lg transition-shadow duration-300">
+            <div key={article.title} className="rounded-2xl border border-gold/20 overflow-hidden bg-cream hover:shadow-lg transition-shadow duration-300">
               <div className="h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0 opacity-40" />
               <div className="p-5">
                 <div className="flex items-start gap-3">
@@ -134,7 +134,7 @@ export default function Explore() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {places.map((place) => (
-            <div key={place.name} className="rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300" style={{ background: 'linear-gradient(135deg, #FDF8EE 0%, #F5EDD6 100%)' }}>
+            <div key={place.name} className="rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-cream to-parchment/60">
               <div className="p-5">
                 <div className="flex items-start gap-3">
                   <span className="text-2xl shrink-0 mt-0.5">{place.icon}</span>

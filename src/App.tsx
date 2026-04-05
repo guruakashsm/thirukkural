@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import SettingsPanel from './components/SettingsPanel'
 import Home from './pages/Home'
 import KuralDetail from './pages/KuralDetail'
 import Category from './pages/Category'
@@ -17,6 +18,7 @@ import HowToRead from './pages/HowToRead'
 import Contact from './pages/Contact'
 import Widget from './pages/Widget'
 import WidgetBuilder from './pages/WidgetBuilder'
+import Developer from './pages/Developer'
 import InstallPrompt from './components/InstallPrompt'
 
 function ScrollToTop() {
@@ -41,6 +43,7 @@ function App() {
     <div className="min-h-screen flex flex-col bg-cream">
       <ScrollToTop />
       <Navbar />
+      <SettingsPanel />
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -57,6 +60,7 @@ function App() {
           <Route path="/how-to-read" element={<HowToRead />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/widgets" element={<WidgetBuilder />} />
+          <Route path="/developer" element={<Developer />} />
         </Routes>
       </main>
       <InstallPrompt />

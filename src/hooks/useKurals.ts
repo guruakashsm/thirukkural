@@ -37,12 +37,6 @@ export interface CategoryData {
 interface IndexedKural {
   kural: Kural
   joinedText: string
-  tokens: string[]
-}
-
-interface SearchHit {
-  kural: Kural
-  score: number
 }
 
 const normalizeText = (value: string) =>
@@ -52,103 +46,10 @@ const normalizeText = (value: string) =>
     .replace(/\s+/g, ' ')
     .trim()
 
-const tokenize = (value: string) => normalizeText(value).split(' ').filter(Boolean)
-
-const isSubsequence = (needle: string, haystack: string) => {
-  if (!needle || needle.length > haystack.length) return false
-  let needleIndex = 0
-  for (const ch of haystack) {
-    if (ch === needle[needleIndex]) {
-      needleIndex += 1
-      if (needleIndex === needle.length) return true
-    }
-  }
-  return false
-}
-
-const levenshteinDistance = (left: string, right: string, maxDistance: number) => {
-  const a = [...left]
-  const b = [...right]
-  if (!a.length) return b.length
-  if (!b.length) return a.length
-  if (Math.abs(a.length - b.length) > maxDistance) return maxDistance + 1
-
-  let prev = new Array(b.length + 1).fill(0).map((_, i) => i)
-  let curr = new Array(b.length + 1).fill(0)
-
-  for (let i = 1; i <= a.length; i += 1) {
-    curr[0] = i
-    let rowMin = curr[0]
-
-    for (let j = 1; j <= b.length; j += 1) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1
-      curr[j] = Math.min(
-        prev[j] + 1,
-        curr[j - 1] + 1,
-        prev[j - 1] + cost
-      )
-      rowMin = Math.min(rowMin, curr[j])
-    }
-
-    if (rowMin > maxDistance) return maxDistance + 1
-    const nextPrev = curr
-    curr = prev
-    prev = nextPrev
-  }
-
-  return prev[b.length]
-}
-
-const isFuzzyTokenMatch = (queryToken: string, candidateToken: string) => {
-  if (candidateToken.includes(queryToken)) return true
-  if (queryToken.length >= 3 && isSubsequence(queryToken, candidateToken)) return true
-
-  const maxDistance = queryToken.length <= 4 ? 1 : 2
-  return levenshteinDistance(queryToken, candidateToken, maxDistance) <= maxDistance
-}
-
-const scoreIndexedKural = (entry: IndexedKural, normalizedQuery: string, queryTokens: string[]) => {
-  let score = 0
-  const phraseIndex = entry.joinedText.indexOf(normalizedQuery)
-  if (phraseIndex >= 0) {
-    score += 95 + Math.max(0, 20 - phraseIndex)
-  }
-
-  if (!queryTokens.length) return score
-
-  for (const queryToken of queryTokens) {
-    if (entry.tokens.includes(queryToken)) {
-      score += 38
-      continue
-    }
-
-    const prefixMatch = entry.tokens.some((token) => token.startsWith(queryToken))
-    if (prefixMatch) {
-      score += 30
-      continue
-    }
-
-    const partialMatch = entry.tokens.some((token) => token.includes(queryToken))
-    if (partialMatch) {
-      score += 22
-      continue
-    }
-
-    const fuzzyMatch = queryToken.length >= 3 && entry.tokens.some((token) => isFuzzyTokenMatch(queryToken, token))
-    if (fuzzyMatch) {
-      score += 14
-      continue
-    }
-
-    return 0
-  }
-
-  return score + queryTokens.length * 4
-}
-
 export function useKurals() {
   const kurals = kuralsData as Kural[]
   const categories = categoriesData as CategoryData[]
+
   const indexedKurals = useMemo<IndexedKural[]>(
     () =>
       kurals.map((kural) => {
@@ -160,14 +61,9 @@ export function useKurals() {
           kural.chapterEnglish,
           String(kural.number),
         ]
-
-        const normalizedFields = fields.map(normalizeText).filter(Boolean)
-        const tokens = Array.from(new Set(normalizedFields.flatMap((field) => tokenize(field))))
-
         return {
           kural,
-          joinedText: normalizedFields.join(' '),
-          tokens,
+          joinedText: fields.map(normalizeText).filter(Boolean).join(' '),
         }
       }),
     [kurals]
@@ -200,33 +96,30 @@ export function useKurals() {
 
   const searchKurals = useMemo(() => {
     return (query: string): Kural[] => {
-      if (!query.trim()) return []
-      const trimmedQuery = query.trim()
-      const normalizedQuery = normalizeText(trimmedQuery)
-      if (!normalizedQuery) return []
+      const normalized = normalizeText(query.trim())
+      if (!normalized) return []
 
-      if (/^\d+$/.test(normalizedQuery)) {
-        const num = parseInt(normalizedQuery, 10)
+      // Number lookup — return exact kural
+      if (/^\d+$/.test(normalized)) {
+        const num = parseInt(normalized, 10)
         const exact = kurals.find(k => k.number === num)
         return exact ? [exact] : []
       }
 
-      const queryTokens = normalizedQuery.split(' ').filter(Boolean)
-      const hits: SearchHit[] = []
+      const tokens = normalized.split(' ').filter(Boolean)
+
+      const phraseMatches: Kural[] = []
+      const tokenMatches: Kural[] = []
 
       for (const entry of indexedKurals) {
-        const score = scoreIndexedKural(entry, normalizedQuery, queryTokens)
-        if (score > 0) {
-          hits.push({ kural: entry.kural, score })
+        if (entry.joinedText.includes(normalized)) {
+          phraseMatches.push(entry.kural)
+        } else if (tokens.every(t => entry.joinedText.includes(t))) {
+          tokenMatches.push(entry.kural)
         }
       }
 
-      return hits
-        .sort((left, right) => {
-          if (right.score !== left.score) return right.score - left.score
-          return left.kural.number - right.kural.number
-        })
-        .map((hit) => hit.kural)
+      return [...phraseMatches, ...tokenMatches]
     }
   }, [kurals, indexedKurals])
 

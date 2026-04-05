@@ -27,7 +27,7 @@ export default function CategoryCard({ name, tamilName, englishName, description
   return (
     <Link
       to={`/browse?category=${encodeURIComponent(name)}&focus=division`}
-      className="interactive-hover-card no-underline block bg-gradient-to-br from-white to-parchment/30 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-500 hover:-translate-y-1"
+      className="interactive-hover-card no-underline block bg-gradient-to-br from-cream to-parchment/30 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-500 hover:-translate-y-1"
       style={{ borderLeft: `4px solid ${color}` }}
     >
       <div

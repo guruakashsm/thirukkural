@@ -158,13 +158,13 @@ export default function KuralAudioPlayer({
   }
 
   const containerClass = compact
-    ? `audio-shell rounded-xl border border-gold/25 bg-gradient-to-br from-[#FFF9EF] via-white to-[#F5EBD2] px-3 py-2.5 shadow-[0_6px_20px_-18px_rgba(90,70,20,0.55)] ${className}`
-    : `audio-shell rounded-2xl border border-gold/30 bg-gradient-to-br from-[#FFF9EF] via-[#FFFEFB] to-[#F4E8CA] px-3.5 py-3 shadow-[0_14px_34px_-24px_rgba(90,70,20,0.58)] ${className}`
+    ? `audio-shell rounded-xl border border-gold/25 bg-gradient-to-br from-cream via-parchment/30 to-cream-dark px-3 py-2.5 shadow-[0_6px_20px_-18px_rgba(90,70,20,0.55)] ${className}`
+    : `audio-shell rounded-2xl border border-gold/30 bg-gradient-to-br from-cream via-cream-dark/60 to-parchment px-3.5 py-3 shadow-[0_14px_34px_-24px_rgba(90,70,20,0.58)] ${className}`
 
   if (!source) {
     return (
       <div className={containerClass} onClick={trapEvent}>
-        <div className="rounded-xl border border-gold/20 bg-white/75 px-3 py-2.5 flex items-center gap-2 text-xs text-gray-light">
+        <div className="rounded-xl border border-gold/20 bg-cream/75 px-3 py-2.5 flex items-center gap-2 text-xs text-gray-light">
           <span className="text-base">🔇</span>
           <span className="font-medium">{t('audioUnavailable')}</span>
         </div>
@@ -175,7 +175,7 @@ export default function KuralAudioPlayer({
   if (hasError) {
     return (
       <div className={containerClass} onClick={trapEvent}>
-        <div className="rounded-xl border border-terracotta/25 bg-white/75 px-3 py-2.5 flex items-center gap-2 text-xs text-terracotta">
+        <div className="rounded-xl border border-terracotta/25 bg-cream/75 px-3 py-2.5 flex items-center gap-2 text-xs text-terracotta">
           <span className="text-base">⚠️</span>
           <span className="font-medium">{t('audioLoadError')}</span>
         </div>
@@ -188,7 +188,7 @@ export default function KuralAudioPlayer({
       <audio ref={audioRef} src={source} preload="metadata" />
 
       <div className="flex items-center justify-between mb-2">
-        <span className={`${compact ? 'text-[11px]' : 'text-xs'} inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/85 border border-gold/25 text-gold-dark font-semibold`}>
+        <span className={`${compact ? 'text-[11px]' : 'text-xs'} inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cream/85 border border-gold/25 text-gold-dark font-semibold`}>
           <span className="text-sm">🔊</span>
           {t('listenKural')}
         </span>
@@ -215,7 +215,7 @@ export default function KuralAudioPlayer({
           )}
         </button>
 
-        <div className="min-w-0 flex-1 rounded-xl border border-gold/20 bg-white/75 px-2.5 py-1.5">
+        <div className="min-w-0 flex-1 rounded-xl border border-gold/20 bg-cream/75 px-2.5 py-1.5">
           <input
             type="range"
             min={0}
@@ -230,7 +230,7 @@ export default function KuralAudioPlayer({
 
       <div className={`mt-2.5 ${compact ? 'space-y-2' : 'space-y-2.5'}`}>
         {hasModeToggle && (
-          <div className="rounded-xl border border-gold/20 bg-white/75 px-3 py-2">
+          <div className="rounded-xl border border-gold/20 bg-cream/75 px-3 py-2">
             <span className="text-[11px] text-gray-light font-semibold uppercase tracking-wide">{t('readMode')}</span>
             <div className="mt-1.5 flex items-center gap-2 flex-wrap">
               <button
@@ -238,7 +238,7 @@ export default function KuralAudioPlayer({
                 className={`px-3 py-1 rounded-lg text-[11px] border transition-all duration-300 cursor-pointer ${
                   readingMode === 'kuralOnly'
                     ? 'bg-gradient-to-br from-gold/30 to-gold/15 border-gold/45 text-gold-dark shadow-[0_6px_16px_-12px_rgba(146,108,24,0.8)]'
-                    : 'bg-white border-gray-light/30 text-gray hover:border-gold/35 hover:bg-gold/5'
+                    : 'bg-cream border-gray-light/30 text-gray hover:border-gold/35 hover:bg-gold/5'
                 }`}
               >
                 {t('readKuralOnly')}
@@ -248,7 +248,7 @@ export default function KuralAudioPlayer({
                 className={`px-3 py-1 rounded-lg text-[11px] border transition-all duration-300 cursor-pointer ${
                   readingMode === 'kuralWithPorul'
                     ? 'bg-gradient-to-br from-gold/30 to-gold/15 border-gold/45 text-gold-dark shadow-[0_6px_16px_-12px_rgba(146,108,24,0.8)]'
-                    : 'bg-white border-gray-light/30 text-gray hover:border-gold/35 hover:bg-gold/5'
+                    : 'bg-cream border-gray-light/30 text-gray hover:border-gold/35 hover:bg-gold/5'
                 }`}
               >
                 {t('readKuralWithPorul')}
@@ -257,13 +257,13 @@ export default function KuralAudioPlayer({
           </div>
         )}
 
-        <div className="rounded-xl border border-gold/20 bg-white/75 px-3 py-2">
+        <div className="rounded-xl border border-gold/20 bg-cream/75 px-3 py-2">
           <div className="flex items-center justify-between gap-2.5">
             <span className="text-[11px] text-gray-light font-semibold uppercase tracking-wide">{t('playbackSpeed')}</span>
             <div className="flex items-center gap-2.5">
               <button
                 onClick={(event) => adjustPlaybackRate(event, -1)}
-                className="w-7 h-7 rounded-lg border border-gray-light/35 bg-white text-dark hover:border-gold/35 hover:bg-gold/5 transition-colors cursor-pointer text-sm leading-none"
+                className="w-7 h-7 rounded-lg border border-gray-light/35 bg-cream text-dark hover:border-gold/35 hover:bg-gold/5 transition-colors cursor-pointer text-sm leading-none"
                 aria-label={t('decrease')}
                 title={t('decrease')}
               >
@@ -274,7 +274,7 @@ export default function KuralAudioPlayer({
               </span>
               <button
                 onClick={(event) => adjustPlaybackRate(event, 1)}
-                className="w-7 h-7 rounded-lg border border-gray-light/35 bg-white text-dark hover:border-gold/35 hover:bg-gold/5 transition-colors cursor-pointer text-sm leading-none"
+                className="w-7 h-7 rounded-lg border border-gray-light/35 bg-cream text-dark hover:border-gold/35 hover:bg-gold/5 transition-colors cursor-pointer text-sm leading-none"
                 aria-label={t('increase')}
                 title={t('increase')}
               >
@@ -284,7 +284,7 @@ export default function KuralAudioPlayer({
           </div>
         </div>
 
-        <label className="inline-flex items-center gap-2.5 text-[11px] text-dark cursor-pointer select-none rounded-lg border border-gold/20 bg-white/75 px-3 py-1.5">
+        <label className="inline-flex items-center gap-2.5 text-[11px] text-dark cursor-pointer select-none rounded-lg border border-gold/20 bg-cream/75 px-3 py-1.5">
           <input
             type="checkbox"
             checked={repeatEnabled}

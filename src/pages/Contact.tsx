@@ -109,7 +109,7 @@ export default function Contact() {
         </p>
       </header>
 
-      <section className="rounded-2xl border border-gold/20 bg-gradient-to-br from-white via-cream/90 to-cream-dark/60 p-5 md:p-7 shadow-[0_12px_30px_rgba(92,61,46,0.08)]">
+      <section className="rounded-2xl border border-gold/20 bg-gradient-to-br from-cream via-cream/90 to-cream-dark/60 p-5 md:p-7 shadow-[0_12px_30px_rgba(92,61,46,0.08)]">
         <div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <p className="text-sm text-gray leading-relaxed">{t('contactIntro')}</p>
@@ -123,7 +123,7 @@ export default function Contact() {
                   value={form.firstName}
                   onChange={(event) => updateField('firstName', event.target.value)}
                   placeholder={t('contactFirstNamePlaceholder')}
-                  className="mt-1.5 w-full rounded-xl border border-gold/25 bg-white/95 px-3.5 py-2.5 text-sm text-dark outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/25"
+                  className="mt-1.5 w-full rounded-xl border border-gold/25 bg-cream/95 px-3.5 py-2.5 text-sm text-dark outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/25"
                 />
               </label>
 
@@ -135,7 +135,7 @@ export default function Contact() {
                   value={form.email}
                   onChange={(event) => updateField('email', event.target.value)}
                   placeholder={t('contactEmailPlaceholder')}
-                  className="mt-1.5 w-full rounded-xl border border-gold/25 bg-white/95 px-3.5 py-2.5 text-sm text-dark outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/25"
+                  className="mt-1.5 w-full rounded-xl border border-gold/25 bg-cream/95 px-3.5 py-2.5 text-sm text-dark outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/25"
                 />
               </label>
             </div>
@@ -146,7 +146,7 @@ export default function Contact() {
                 required
                 value={form.type}
                 onChange={(event) => updateField('type', event.target.value as ContactType | '')}
-                className="mt-1.5 w-full rounded-xl border border-gold/25 bg-white/95 px-3.5 py-2.5 text-sm text-dark outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/25"
+                className="mt-1.5 w-full rounded-xl border border-gold/25 bg-cream/95 px-3.5 py-2.5 text-sm text-dark outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/25"
               >
                 <option value="" disabled>
                   {t('contactTypePlaceholder')}
@@ -167,7 +167,7 @@ export default function Contact() {
                 value={form.message}
                 onChange={(event) => updateField('message', event.target.value)}
                 placeholder={t('contactMessagePlaceholder')}
-                className="mt-1.5 w-full rounded-xl border border-gold/25 bg-white/95 px-3.5 py-2.5 text-sm text-dark outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/25 resize-y min-h-36"
+                className="mt-1.5 w-full rounded-xl border border-gold/25 bg-cream/95 px-3.5 py-2.5 text-sm text-dark outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/25 resize-y min-h-36"
               />
             </label>
 

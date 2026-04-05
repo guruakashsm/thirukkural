@@ -130,7 +130,7 @@ function Toggle({ on, set }: { on: boolean; set: (v: boolean) => void }) {
       className="relative inline-flex h-[22px] w-[42px] rounded-full transition-colors duration-200 cursor-pointer border-0 flex-shrink-0"
       style={{ background: on ? 'var(--color-gold)' : 'rgba(107,114,128,0.22)' }}
     >
-      <span className="absolute top-[3px] left-[3px] inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200"
+      <span className="absolute top-[3px] left-[3px] inline-block h-4 w-4 rounded-full bg-cream shadow transition-transform duration-200"
         style={{ transform: on ? 'translateX(20px)' : 'translateX(0)' }} />
     </button>
   )
@@ -138,7 +138,7 @@ function Toggle({ on, set }: { on: boolean; set: (v: boolean) => void }) {
 
 function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`relative rounded-2xl border border-gold/20 bg-white p-5 shadow-[0_3px_14px_rgba(0,0,0,0.07)] transition-shadow duration-300 hover:shadow-[0_6px_24px_rgba(0,0,0,0.10)] ${className}`}>
+    <div className={`relative rounded-2xl border border-gold/20 bg-cream p-5 shadow-[0_3px_14px_rgba(0,0,0,0.07)] transition-shadow duration-300 hover:shadow-[0_6px_24px_rgba(0,0,0,0.10)] ${className}`}>
       <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
       {children}
     </div>
@@ -216,7 +216,7 @@ function SquareOptionBtn({
   className?: string
 }) {
   const base = 'w-full aspect-square rounded-md text-[9.5px] leading-tight font-semibold cursor-pointer border-2 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/35 focus-visible:ring-offset-2 focus-visible:ring-offset-cream flex items-center justify-center text-center px-1.5'
-  const inactive = 'border-gold/20 bg-white text-gray shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:border-gold/40 hover:shadow-[0_14px_26px_rgba(168,139,62,0.20)] hover:-translate-y-0.5 active:translate-y-0'
+  const inactive = 'border-gold/20 bg-cream text-gray shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:border-gold/40 hover:shadow-[0_14px_26px_rgba(168,139,62,0.20)] hover:-translate-y-0.5 active:translate-y-0'
   const selected = 'border-gold/70 bg-cream text-dark shadow-[0_16px_30px_rgba(168,139,62,0.26)] -translate-y-0.5'
   return (
     <button
@@ -243,7 +243,7 @@ function SquareOptionBtnFixed({
   className?: string
 }) {
   const base = 'shrink-0 rounded-md text-[9.5px] leading-tight font-semibold cursor-pointer border-2 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/35 focus-visible:ring-offset-2 focus-visible:ring-offset-cream flex items-center justify-center text-center px-1.5'
-  const inactive = 'border-gold/20 bg-white text-gray shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:border-gold/40 hover:shadow-[0_14px_26px_rgba(168,139,62,0.20)] hover:-translate-y-0.5 active:translate-y-0'
+  const inactive = 'border-gold/20 bg-cream text-gray shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:border-gold/40 hover:shadow-[0_14px_26px_rgba(168,139,62,0.20)] hover:-translate-y-0.5 active:translate-y-0'
   const selected = 'border-gold/70 bg-cream text-dark shadow-[0_16px_30px_rgba(168,139,62,0.26)] -translate-y-0.5'
   return (
     <button
@@ -263,7 +263,7 @@ function PatternSwatch({ kind }: { kind: WidgetBgPattern }) {
     height: 26,
     borderRadius: 6,
     border: '1px solid rgba(168,139,62,0.28)',
-    backgroundColor: 'rgba(255,255,255,0.65)',
+    backgroundColor: 'color-mix(in srgb, var(--color-cream) 65%, transparent)',
   }
   if (kind === 'dots') {
     return (
@@ -294,7 +294,7 @@ function PatternSwatch({ kind }: { kind: WidgetBgPattern }) {
 function MiniCard({
   border = '1px solid rgba(168,139,62,0.32)',
   radius = 6,
-  bg = 'rgba(255,255,255,0.65)',
+  bg = 'color-mix(in srgb, var(--color-cream) 65%, transparent)',
   shadow,
 }: {
   border?: string
@@ -363,7 +363,7 @@ function AlignSwatch({ align }: { align: WidgetAlign }) {
         height: 26,
         borderRadius: 6,
         border: '1px solid rgba(168,139,62,0.22)',
-        background: 'rgba(255,255,255,0.55)',
+        background: 'color-mix(in srgb, var(--color-cream) 55%, transparent)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -993,7 +993,7 @@ export default function WidgetBuilder() {
                   href={embedUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs text-gold-dark hover:text-gold transition-colors no-underline font-medium border border-gold/25 bg-white/70 px-2.5 py-1.5 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/35 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
+                  className="inline-flex items-center gap-1.5 text-xs text-gold-dark hover:text-gold transition-colors no-underline font-medium border border-gold/25 bg-cream/70 px-2.5 py-1.5 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/35 focus-visible:ring-offset-2 focus-visible:ring-offset-cream"
                 >
                   Open standalone
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
@@ -1037,7 +1037,8 @@ export default function WidgetBuilder() {
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm font-semibold text-dark">Embed Code</span>
                 <button type="button" onClick={() => copy(embedCode, setCopied)}
-                  className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-sm text-xs font-medium cursor-pointer border transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/35 focus-visible:ring-offset-2 focus-visible:ring-offset-cream ${copied ? 'bg-green-50 border-green-200 text-green-700' : 'border-gold/30 bg-cream text-gold-dark hover:border-gold/55 hover:bg-gold/10'}`}>
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-sm text-xs font-medium cursor-pointer border transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/35 focus-visible:ring-offset-2 focus-visible:ring-offset-cream border-gold/30 bg-cream text-gold-dark hover:border-gold/55 hover:bg-gold/10"
+                  style={copied ? { backgroundColor: 'color-mix(in srgb, var(--color-quiz-correct) 12%, transparent)', borderColor: 'color-mix(in srgb, var(--color-quiz-correct) 35%, transparent)', color: 'var(--color-quiz-correct-text)' } : undefined}>
                   {copied
                     ? <><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>Copied!</>
                     : <><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>Copy Code</>}

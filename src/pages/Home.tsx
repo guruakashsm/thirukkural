@@ -146,24 +146,24 @@ export default function Home() {
           <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-gold-dark/20 via-gold/50 to-gold-dark/20" />
 
           <div className="relative z-10 px-3 pt-4 sm:px-6 sm:pt-6 md:px-8 flex items-center justify-between">
-            <div className="bg-[#8B1A1A]/90 px-4 py-1.5 rounded-lg flex items-center gap-2 shadow-sm">
+            <div className="bg-maroon/90 px-4 py-1.5 rounded-lg flex items-center gap-2 shadow-sm">
               <span className="text-gold-light text-xs">&#10043;</span>
               <span className="font-tamil text-sm font-bold text-gold-light tracking-wide">{t('kuralOfTheDay')}</span>
               <span className="text-gold-light text-xs">&#10043;</span>
             </div>
-            <div className="flex items-center gap-0.5 bg-[#8B1A1A]/5 rounded-xl px-1 py-0.5 border border-[#8B1A1A]/15">
+            <div className="flex items-center gap-0.5 bg-maroon/5 rounded-xl px-1 py-0.5 border border-maroon/15">
               <button
                 onClick={() => setDayOffset(d => d - 1)}
-                className="p-2 rounded-lg hover:bg-[#8B1A1A]/10 active:scale-90 transition-all bg-transparent border-none cursor-pointer"
+                className="p-2 rounded-lg hover:bg-maroon/10 active:scale-90 transition-all bg-transparent border-none cursor-pointer"
                 aria-label="Previous day"
               >
-                <svg className="w-4 h-4 text-[#8B1A1A]/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-maroon/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <button
                 onClick={() => setDayOffset(0)}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-[#3D1C00]/70 hover:bg-[#8B1A1A]/10 active:scale-95 transition-all bg-transparent border-none cursor-pointer font-tamil"
+                className="px-3 py-1.5 rounded-lg text-xs font-semibold text-deep/80 hover:bg-maroon/10 active:scale-95 transition-all bg-transparent border-none cursor-pointer font-tamil"
                 title="Click to go to today"
               >
                 {(() => {
@@ -174,10 +174,10 @@ export default function Home() {
               </button>
               <button
                 onClick={() => setDayOffset(d => d + 1)}
-                className="p-2 rounded-lg hover:bg-[#8B1A1A]/10 active:scale-90 transition-all bg-transparent border-none cursor-pointer"
+                className="p-2 rounded-lg hover:bg-maroon/10 active:scale-90 transition-all bg-transparent border-none cursor-pointer"
                 aria-label="Next day"
               >
-                <svg className="w-4 h-4 text-[#8B1A1A]/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-maroon/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
@@ -209,8 +209,8 @@ export default function Home() {
               slideDir === 'right' ? 'animate-slide-right' : slideDir === 'left' ? 'animate-slide-left' : ''
             }`} key={kural.number}>
               <div className="flex flex-wrap items-center gap-2.5 mb-5">
-                <span className="font-tamil text-sm font-bold text-[#8B1A1A]">{t('kural')} {kural.number}</span>
-                <span className="text-[#8B1A1A]/25">|</span>
+                <span className="font-tamil text-sm font-bold text-maroon">{t('kural')} {kural.number}</span>
+                <span className="text-maroon/30">|</span>
                 <span
                   className="group/chapter"
                   title={`${t('chapter')} ${kural.chapter}`}
@@ -234,32 +234,30 @@ export default function Home() {
               </div>
 
               <div className="mb-6">
-                <div
-                  className="group/kural"
-                >
-                  <KuralText tamil={kural.tamil} baseSizePx={30} className="text-[#3D1C00] group-hover/kural:text-[#8B1A1A] transition-colors duration-300" />
+                <div className="group/kural">
+                  <KuralText tamil={kural.tamil} baseSizePx={30} className="text-deep group-hover/kural:text-maroon transition-colors duration-300" />
                 </div>
                 {copied && (
-                  <span className="copy-toast text-xs px-2.5 py-1 rounded-full bg-[#8B1A1A] text-gold-light font-medium mt-2 inline-block">
+                  <span className="copy-toast text-xs px-2.5 py-1 rounded-full bg-maroon text-gold-light font-medium mt-2 inline-block">
                     {t('copied')}
                   </span>
                 )}
               </div>
 
               <div className="lotus-separator mb-5">
-                <span className="text-[#8B1A1A]/30 text-xs">&#10048;</span>
+                <span className="text-maroon/30 text-xs">&#10048;</span>
               </div>
 
               {/* Tamil meaning — always shown */}
               <div className="mb-4">
-                <p className="font-tamil text-xs font-bold text-[#8B1A1A]/70 mb-1.5 tracking-wider">{t('tamilMeaning')}</p>
-                <p className="font-tamil text-sm text-[#3D1C00]/80 leading-relaxed">{kural.tamilMeaning}</p>
+                <p className="font-tamil text-xs font-bold text-maroon/70 mb-1.5 tracking-wider">{t('tamilMeaning')}</p>
+                <p className="font-tamil text-sm text-deep/80 leading-relaxed">{kural.tamilMeaning}</p>
               </div>
 
               {/* Translated meaning */}
               <div className="mb-6">
-                <p className="text-xs font-bold text-[#8B1A1A]/70 mb-1.5 tracking-wider uppercase">{t('meaning')}</p>
-                <p className="text-sm text-[#3D1C00]/70 leading-relaxed font-medium">{meaningText}</p>
+                <p className="text-xs font-bold text-maroon/70 mb-1.5 tracking-wider uppercase">{t('meaning')}</p>
+                <p className="text-sm text-deep/80 leading-relaxed font-medium">{meaningText}</p>
               </div>
 
               <div className="flex items-center gap-2.5 pt-2">
@@ -267,8 +265,8 @@ export default function Home() {
                   onClick={handleBookmark}
                   className={`p-2.5 rounded-xl border transition-all cursor-pointer duration-300 active:scale-90 ${
                     bookmarked
-                      ? 'border-[#8B1A1A] bg-[#8B1A1A]/10 text-[#8B1A1A] shadow-sm'
-                      : 'border-[#8B1A1A]/20 text-[#8B1A1A]/40 hover:text-[#8B1A1A] hover:border-[#8B1A1A]/50 bg-white/50'
+                      ? 'border-maroon bg-maroon/10 text-maroon shadow-sm'
+                      : 'border-maroon/20 text-maroon/50 hover:text-maroon hover:border-maroon/50 bg-cream/50'
                   } ${bookmarked ? 'animate-pop' : ''}`}
                   aria-label={bookmarked ? t('removeFromWatchlist') : t('addToWatchlist')}
                 >
@@ -278,7 +276,7 @@ export default function Home() {
                 </button>
                 <button
                   onClick={handleShare}
-                  className="p-2.5 rounded-xl border border-[#8B1A1A]/20 text-[#8B1A1A]/40 hover:text-[#8B1A1A] hover:border-[#8B1A1A]/50 active:scale-90 transition-all cursor-pointer bg-white/50 duration-300"
+                  className="p-2.5 rounded-xl border border-maroon/20 text-maroon/50 hover:text-maroon hover:border-maroon/50 active:scale-90 transition-all cursor-pointer bg-cream/50 duration-300"
                   aria-label={t('share')}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -287,7 +285,7 @@ export default function Home() {
                 </button>
                 <button
                   onClick={handleCopyKural}
-                  className="p-2.5 rounded-xl border border-[#8B1A1A]/20 text-[#8B1A1A]/40 hover:text-[#8B1A1A] hover:border-[#8B1A1A]/50 active:scale-90 transition-all cursor-pointer bg-white/50 duration-300"
+                  className="p-2.5 rounded-xl border border-maroon/20 text-maroon/50 hover:text-maroon hover:border-maroon/50 active:scale-90 transition-all cursor-pointer bg-cream/50 duration-300"
                   aria-label={t('copyKural')}
                   title={t('copyKural')}
                 >
@@ -356,7 +354,7 @@ export default function Home() {
 
       {/* Why Thirukkural Matters Today */}
       <RevealSection className="mb-12" delayMs={80}>
-        <div className="relative rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #FDF8EE 0%, #F5EDD6 100%)' }}>
+        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-cream to-parchment/60">
           <div className="absolute inset-0 opacity-[0.03]" style={{
             backgroundImage: 'radial-gradient(circle, #8B4513 1px, transparent 1px)',
             backgroundSize: '20px 20px'
@@ -392,7 +390,7 @@ export default function Home() {
 
       {/* Did You Know? */}
       <RevealSection className="mb-12" delayMs={100}>
-        <div className="relative rounded-2xl border border-gold/20 overflow-hidden bg-white">
+        <div className="relative rounded-2xl border border-gold/20 overflow-hidden bg-cream">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0 opacity-40" />
           <div className="p-5 sm:p-8 md:p-10">
             <div className="flex items-center gap-3 mb-5">

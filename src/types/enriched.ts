@@ -17,6 +17,14 @@ export interface Translation {
 export interface KuralTranslations {
   english: Translation[]
   tamil: Translation[]
+  hindi?: Translation[]
+  kannada?: Translation[]
+  sanskrit?: Translation[]
+  french?: Translation[]
+  german?: Translation[]
+  malayalam?: Translation[]
+  telugu?: Translation[]
+  korean?: Translation[]
 }
 
 export interface KuralStoryData {

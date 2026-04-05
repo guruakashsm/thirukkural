@@ -34,7 +34,7 @@ export default function LanguageDropdown({ showLabel = false }: LanguageDropdown
         {showLabel && <span className="text-xs font-medium uppercase">{lang}</span>}
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-1.5 w-56 bg-white rounded-xl shadow-xl border border-gold/20 py-2 z-50 max-h-80 overflow-y-auto animate-fade-in">
+        <div className="absolute right-0 top-full mt-1.5 w-56 rounded-xl shadow-xl border border-gold/20 py-2 z-50 max-h-80 overflow-y-auto animate-fade-in" style={{ background: 'var(--color-cream)' }}>
           {LANGUAGES.map(l => (
             <button
               key={l.code}

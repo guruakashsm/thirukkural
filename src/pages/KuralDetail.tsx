@@ -81,7 +81,7 @@ export default function KuralDetail() {
         {kuralNumber > 1 ? (
           <button
             onClick={() => navigate(`/kural/${kuralNumber - 1}`)}
-            className="group flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-gold/20 text-gray hover:text-gold-dark hover:border-gold/50 transition-all cursor-pointer text-sm"
+            className="group flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cream border border-gold/20 text-gray hover:text-gold-dark hover:border-gold/50 transition-all cursor-pointer text-sm"
           >
             <svg className="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -100,7 +100,7 @@ export default function KuralDetail() {
         {kuralNumber < 1330 ? (
           <button
             onClick={() => navigate(`/kural/${kuralNumber + 1}`)}
-            className="group flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-gold/20 text-gray hover:text-gold-dark hover:border-gold/50 transition-all cursor-pointer text-sm"
+            className="group flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cream border border-gold/20 text-gray hover:text-gold-dark hover:border-gold/50 transition-all cursor-pointer text-sm"
           >
             {t('kural')} {kuralNumber + 1}
             <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

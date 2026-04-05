@@ -10,6 +10,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           kurals: ['./src/data/kurals.json'],
+          'kurals-enriched': ['./src/data/kurals-enriched.json'],
         },
       },
     },
@@ -45,7 +46,7 @@ export default defineConfig({
       },
       workbox: {
         // Enriched/static datasets are larger than Workbox default 2 MiB.
-        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
+        maximumFileSizeToCacheInBytes: 16 * 1024 * 1024,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
         runtimeCaching: [
           {

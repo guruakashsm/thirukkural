@@ -17,7 +17,7 @@ export default function SearchBar({ value, onChange, placeholder = 'Search kural
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         autoFocus={autoFocus}
-        className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white/80 border border-gold/20 text-dark placeholder-gray-light text-base outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all shadow-[inset_0_1px_3px_rgba(0,0,0,0.04)]"
+        className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-cream/80 border border-gold/20 text-dark placeholder-gray-light text-base outline-none focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all shadow-[inset_0_1px_3px_rgba(0,0,0,0.04)]"
         style={{ fontFamily: 'var(--font-inter)' }}
       />
     </div>
